@@ -1,0 +1,14 @@
+server:
+  port: 8082
+  servlet:
+    # 应用的访问路径
+    context-path: /
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+logging:
+  config: classpath:logback.xml
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.warrior.gm.entity

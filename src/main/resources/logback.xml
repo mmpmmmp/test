@@ -1,0 +1,46 @@
+<configuration debug="false">
+
+    <property name="LOG_HOME" value="/data/GM/logs" />
+    <property name="LOG_BACKUP_HOME" value="${LOG_HOME}/backup" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_HOME}/gm.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_BACKUP_HOME}/gm-%d{yyyy-MM-dd}-%i.log</FileNamePattern>
+            <MaxHistory>5</MaxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{0} - %msg%n</Pattern>
+        </layout>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{0} - %msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="com.warrior.gm" level="debug" />
+
+    <springProfile name="prod">
+        <root level="${logLevel:-info}">
+            <appender-ref ref="STDOUT" />
+            <appender-ref ref="FILE" />
+        </root>
+    </springProfile>
+
+    <springProfile name="local">
+        <root level="${logLevel:-info}">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+</configuration>
